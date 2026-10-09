@@ -1,0 +1,214 @@
+{
+  "info": {
+    "_postman_id": "b3e0c7a1-8d24-4f12-9c44-77a83d1c4b22",
+    "name": "Products REST API - MySQL2 TS",
+    "description": "HTTP collection for testing the Products REST API developed with Node.js, Express, TypeScript and MySQL2.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000/api/v1/products",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1.1 - GET All Active Products",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/getAll?active=true",
+          "host": ["{{baseUrl}}"],
+          "path": ["getAll"],
+          "query": [
+            {
+              "key": "active",
+              "value": "true",
+              "description": "Filter by active products"
+            }
+          ]
+        },
+        "description": "Requirement 1: General query of active products."
+      },
+      "response": []
+    },
+    {
+      "name": "1.2 - GET Product By ID (Active)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/getById/1",
+          "host": ["{{baseUrl}}"],
+          "path": ["getById", "1"]
+        },
+        "description": "Requirement 1: Query by ID of an existing active product."
+      },
+      "response": []
+    },
+    {
+      "name": "2.0 - POST Create Product",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Monitor Gamer 27 IPS\",\n  \"price\": 4999.99,\n  \"stock\": 12,\n  \"description\": \"Monitor 27 pulgadas 144Hz 1ms IPS con FreeSync\",\n  \"brand\": \"ViewMax\",\n  \"img\": \"https://example.com/monitor.jpg\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/create",
+          "host": ["{{baseUrl}}"],
+          "path": ["create"]
+        },
+        "description": "Requirement 2: Create a new product. Returns 201 Created."
+      },
+      "response": []
+    },
+    {
+      "name": "3.1 - PUT Complete Update of Product",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Monitor Gamer 27 IPS Pro (Edición 2026)\",\n  \"price\": 5299.99,\n  \"stock\": 10,\n  \"description\": \"Monitor 27 pulgadas 165Hz HDR IPS\",\n  \"brand\": \"ViewMax Ultra\",\n  \"img\": \"https://example.com/monitor-v2.jpg\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/update/6",
+          "host": ["{{baseUrl}}"],
+          "path": ["update", "6"]
+        },
+        "description": "Requirement 3: Update all fields of the newly created product (replace ID 6 with your created ID if different)."
+      },
+      "response": []
+    },
+    {
+      "name": "3.2 - PATCH Change Price Only",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"price\": 4750.50\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/change-price/6",
+          "host": ["{{baseUrl}}"],
+          "path": ["change-price", "6"]
+        },
+        "description": "Requirement 3: Exclusively change the price of the created product."
+      },
+      "response": []
+    },
+    {
+      "name": "4.0 - DELETE Logical Deletion",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/delete/6",
+          "host": ["{{baseUrl}}"],
+          "path": ["delete", "6"]
+        },
+        "description": "Requirement 4: Logical deletion (sets active = FALSE, no physical DELETE)."
+      },
+      "response": []
+    },
+    {
+      "name": "5.1 - Verify Deactivated Product NOT in getAll",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/getAll",
+          "host": ["{{baseUrl}}"],
+          "path": ["getAll"]
+        },
+        "description": "Requirement 5: Verification that deactivated product no longer appears in getAll."
+      },
+      "response": []
+    },
+    {
+      "name": "5.2 - Verify Deactivated Product returns 404 in getById",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/getById/6",
+          "host": ["{{baseUrl}}"],
+          "path": ["getById", "6"]
+        },
+        "description": "Requirement 5: Verification that deactivated product returns 404 in getById."
+      },
+      "response": []
+    },
+    {
+      "name": "6.1 - GET Nonexistent ID (404 Case)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/getById/99999",
+          "host": ["{{baseUrl}}"],
+          "path": ["getById", "99999"]
+        },
+        "description": "Requirement 6: Querying a non-existent ID returns 404."
+      },
+      "response": []
+    },
+    {
+      "name": "6.2 - POST Invalid Data (Price <= 0, 400 Case)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Producto con precio inválido\",\n  \"price\": -50.00,\n  \"stock\": 5,\n  \"description\": \"Prueba de validación\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/create",
+          "host": ["{{baseUrl}}"],
+          "path": ["create"]
+        },
+        "description": "Requirement 6: Submitting invalid data (negative price) returns 400 Bad Request."
+      },
+      "response": []
+    },
+    {
+      "name": "6.3 - GET Invalid ID Format (Non-Integer, 400 Case)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/getById/abc",
+          "host": ["{{baseUrl}}"],
+          "path": ["getById", "abc"]
+        },
+        "description": "Requirement 6: Passing non-integer ID parameter returns 400 Bad Request."
+      },
+      "response": []
+    }
+  ]
+}
